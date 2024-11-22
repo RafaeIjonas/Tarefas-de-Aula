@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 1000  // Tamanho máximo da fila
+
+// Definindo a estrutura da fila
+typedef struct {
+    int elementos[MAX];
+    int frente;
+    int tras;
+} Fila;
+
+// Função que inicializa a fila
+void inicializar_fila(Fila *f) {
+    f->frente = 0;
+    f->tras = -1;
+}
+
+// Verifica se a fila está vazia
+int fila_esta_vazia(Fila *f) {
+    return f->frente > f->tras;
+}
+
+// Insere um valor na fila
+void inserir_na_fila(Fila *f, int valor) {
+    if (f->tras < MAX - 1) {
+        f->elementos[++f->tras] = valor;
+    } else {
+        printf("Erro: Fila cheia!\n");
+    }
+}
+
+// Remove o primeiro elemento da fila
+void remover_da_fila(Fila *f) {
+    if (!fila_esta_vazia(f)) {
+        f->frente++;
+    } else {
+        printf("Erro: Fila já está vazia!\n");
+    }
+}
+
+// Imprime os elementos da fila
+void imprimir_fila(Fila *f) {
+    if (fila_esta_vazia(f)) {
+        printf("Fila vazia\n");
+    } else {
+        for (int i = f->frente; i <= f->tras; i++) {
+            printf("%d ", f->elementos[i]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    Fila fila;
+    inicializar_fila(&fila);
+
+    int n, num_acoes, acao, valor;
+
+    // Lê a quantidade de elementos que a fila vai ter inicialmente
+    scanf("%d", &n);
+
+    // Lê os elementos e insere na fila
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &valor);
+        inserir_na_fila(&fila, valor);
+    }
+
+    // Lê o número de ações a serem realizadas na fila
+    scanf("%d", &num_acoes);
+
+    // Processa as ações
+    for (int i = 0; i < num_acoes; i++) {
+        scanf("%d", &acao);
+        if (acao == 1) {
+            remover_da_fila(&fila);
+        } else if (acao == 2) {
+            scanf("%d", &valor);
+            inserir_na_fila(&fila, valor);
+        }
+    }
+
+    // Exibe a fila final
+    imprimir_fila(&fila);
+
+    return 0;
+}
